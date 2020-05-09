@@ -91,19 +91,17 @@ def get_info(tickers, start_date=START_DATE, end_date=END_DATE):
             values
                 dataframe
     '''
-    def build_df(stock, start_date, end_date):
-        df = pd.DataFrame(pdr.DataReader(stock.upper(), 'yahoo', start_date, end_date))
-        return df
-
     if type(tickers) == str: #check if function was called with a list or a single ticker
-        df = build_df(tickers, start_date, end_date)
+        df = pd.DataFrame(pdr.DataReader(tickers.upper(), 'yahoo', start_date, end_date))
         return df
 
-    else:
+    elif type(tickers) == list:
         result = {}
         for i in range (len(tickers)):
-            result[tickers[i]] = build_df(tickers[i], start_date, end_date)
+            result[tickers[i]] = pd.DataFrame(pdr.DataReader(tickers[i].upper(), 'yahoo', start_date, end_date))
         return result
+    else:
+        raise TypeError("tickers must be <class 'str'> or <class 'list'>; {} passed instead".format(type(tickers)))
 
 def main():
     '''
