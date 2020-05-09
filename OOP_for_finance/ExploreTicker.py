@@ -62,6 +62,9 @@ class ExploreTicker:
         if show == True:
             plt.show()
 
+    def calc_percent_change():
+        pass
+
 def get_info(tickers, start_date=START_DATE, end_date=END_DATE):
     '''
     Function that fetches and returns a dataframe with OHLC data for a given ticker.
