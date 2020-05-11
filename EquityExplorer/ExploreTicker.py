@@ -1,3 +1,4 @@
+# ------------------------ Imports ---------------------------------
 import pandas as pd
 import pandas_datareader as pdr
 import datetime
@@ -5,25 +6,21 @@ import matplotlib.pyplot as plt
 import os
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
-TODAY = datetime.date.today()
 
-# ------------------- ADJUST THESE VARIABLES -------------------
-
-#TICKERS = ['aapl','msft','ibm','tsla', 'spy']
-TICKERS = 'spy'
-START_DATE = '2019-01-01'
-END_DATE = TODAY
-
-
-# ------------------- Do Not Edit Below this line -------------------
+# --------------------------------------------------------------------
+# ---------------------- Global Vars ---------------------------------
 
 PROJECT_ROOT_DIR = '.'
 IMAGES_PATH = os.path.join(PROJECT_ROOT_DIR, 'images')
 
+# -----------------------------------------------------------------
 class ExploreTicker:
-    '''This class will hold all functions to plot data as well as calculating
-    various values which can be used to further analyze the stock and its price
-    action.
+    '''
+    Parameters
+    ----------
+    name: str; the name of the object. This will allow all plots saved in a specific
+    folder with the name.
+    data: pandas DataFrame: Dataframe obtained from get_info() function.
     '''
     def __init__(self, name, data):
         self.name = name.upper()
@@ -68,17 +65,7 @@ class ExploreTicker:
         if show == True:
             plt.show()
 
-    def calculate_percent_change(self, column):
-        'Calculates percent change of series'
-
-        percent_change = (column.pct_change()) * 100
-        return percent_change
-
-
-    def calculate_momentum(self):
-        pass
-
-def get_info(tickers, start_date=START_DATE, end_date=END_DATE):
+def get_info(tickers, start_date, end_date):
     '''
     Function that fetches and returns a dataframe with OHLC data for a given ticker.
     Can return one dataframe, or multiple, depending on how many objects are passed in to the stock parameter.
@@ -116,39 +103,10 @@ def get_info(tickers, start_date=START_DATE, end_date=END_DATE):
     else:
         raise TypeError("tickers must be <class 'str'> or <class 'list'>; {} passed instead".format(type(tickers)))
 
-def main():
-    '''
-    Main Program
-    '''
-
-    ls = TICKERS
-
-
-    dfs = get_info(ls)
-
- # This doesnt work. It does not give back seperate dataframes.
- # Need to use something like a dictionary or something to store these objects?
-
-
-
-    # cls_ls = []
-    # for  i in dfs:
-    #     print(i)
-    #     cls_ls.append(ExploreTicker(i, dfs[i]))
-    #
-    # for i in cls_ls:
-    #     print(i.name)
-
-    spy = ExploreTicker('spy', dfs)
-    spy.generate_plot(spy.data.index, spy.adj_close, 'spy_close', 'Date', 'Price', show=True, save=True)
-     #spy.pcnt_change = spy.adj_close.pct_change() * 100
-     #print(spy.pcnt_change)
-     #spy_percent_change = spy.calculate_percent_change(spy.adj_close)
-
-
-
-
+def test():
+    '''Test function when developing'''
+    pass
 
 if __name__ == '__main__':
 
-    main()
+    test()

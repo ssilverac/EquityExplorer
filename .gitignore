@@ -1,4 +1,4 @@
 video_scripts
 *.ipynb_checkpoints
 class_dev.ipynb
-.gitignore
+*pyc
