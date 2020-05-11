@@ -9,8 +9,8 @@ TODAY = datetime.date.today()
 
 # ------------------- ADJUST THESE VARIABLES -------------------
 
-#TICKERS = ['aapl','msft','ibm','tsla', 'spy']
-TICKERS = 'spy'
+TICKERS = ['aapl','msft','ibm','tsla', 'spy']
+#TICKERS = 'spy'
 START_DATE = '2019-01-01'
 END_DATE = TODAY
 
@@ -25,18 +25,18 @@ class ExploreTicker:
     various values which can be used to further analyze the stock and its price
     action.
     '''
-    def __init__(self, name, ticker):
-        self.name = name
-        self.ticker = ticker
-        self.columns = ticker.columns
-        self.high = ticker['High']
-        self.low = ticker['Low']
-        self.open = ticker['Open']
-        self.Close = ticker['Close']
-        self.volume = ticker['Volume']
-        self.adj_close = ticker['Adj Close']
+    def __init__(self, name, data):
+        self.name = name.upper()
+        self.data = data
+        self.columns = data.columns
+        self.open = data['Open']
+        self.high = data['High']
+        self.low = data['Low']
+        self.Close = data['Close']
+        self.adj_close = data['Adj Close']
+        self.volume = data['Volume']
 
-    def generate_plot(self, xlabel, ylabel, show=False):
+    def generate_plot(self, xlabel='Date', ylabel='Adj Close($)', show=False):
         '''
         Generates a plot to show the historical price of a stock
         Parameters:
@@ -46,7 +46,7 @@ class ExploreTicker:
             show: Bool; Default=False. If set to True, plot will appear in pop-up window
         '''
         fig, ax = plt.subplots(figsize=(10,5))
-        ax.plot(self.ticker.index, self.adj_close)
+        ax.plot(self.data.index, self.adj_close)
         ax.set(title=self.name,
                 xlabel=xlabel,
                 ylabel=ylabel)
@@ -62,7 +62,14 @@ class ExploreTicker:
         if show == True:
             plt.show()
 
-    def calc_percent_change():
+    def calculate_percent_change(self, column):
+        'Calculates percent change of series'
+
+        percent_change = (column.pct_change()) * 100
+        return percent_change
+
+
+    def calculate_momentum(self):
         pass
 
 def get_info(tickers, start_date=START_DATE, end_date=END_DATE):
@@ -75,7 +82,7 @@ def get_info(tickers, start_date=START_DATE, end_date=END_DATE):
             str or list
             Should be a valid ticker, or list of tickers
         start_date:
-            str
+            str or datetime object
             Should be in the form of yyyy-mm-dd
         end_date:
             str
@@ -107,10 +114,34 @@ def main():
     '''
     Main Program
     '''
+
     ls = TICKERS
-    data = get_info(ls)
-    print(data.keys())
-    #i.generate_plot('Date', 'Adj Close', show=True)
+
+
+    dfs = get_info(ls)
+
+ # This doesnt work. It does not give back seperate dataframes.
+ # Need to use something like a dictionary or something to store these objects?
+
+
+
+    cls_ls = []
+    for  i in dfs:
+        print(i)
+        cls_ls.append(ExploreTicker(i, dfs[i]))
+
+    for i in cls_ls:
+        print(i.name)
+
+
+    # spy = ExploreTicker('spy', data)
+    # spy.pcnt_change = spy.adj_close.pct_change() * 100
+    # print(spy.pcnt_change)
+    #spy_percent_change = spy.calculate_percent_change(spy.adj_close)
+
+
+
+
 
 if __name__ == '__main__':
 
