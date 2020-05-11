@@ -41,9 +41,14 @@ class ExploreTicker:
         Generates a plot to show the historical price of a stock
         Parameters:
         -----------
-            xlabel: str; Label of the x-axis. Usually Date
-            ylabel: str; Label of the y-axis
-            show: Bool; Default=False. If set to True, plot will appear in pop-up window
+            x: pandas Series; x-axis
+            y: pandas Series; y-axis
+            title: str; The title of the plot. If save=True, title will also be the save name
+            xlabel: str Default=None; Label of the x-axis.
+            ylabel: str Default=None; Label of the y-axis
+            show: Bool; Default=False; If True, plot will appear in pop-up window
+            save: Bool; Default=True; If True, image will save with same title title parameter
+
         '''
         fig, ax = plt.subplots(figsize=(10,5))
         ax.plot(x, y)
@@ -56,7 +61,7 @@ class ExploreTicker:
         if save == True:
             path = os.path.join(IMAGES_PATH, self.name )
             os.makedirs(path, exist_ok=True)
-            print('\nSaving Figure as {} in {}'.format(self.name, path))
+            print('\nSaving Figure as {} in {}'.format(title, path))
             plt.savefig(os.path.join(path, title))
             print('\nFigure Saved Successfully')
 
