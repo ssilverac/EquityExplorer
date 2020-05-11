@@ -9,8 +9,8 @@ TODAY = datetime.date.today()
 
 # ------------------- ADJUST THESE VARIABLES -------------------
 
-TICKERS = ['aapl','msft','ibm','tsla', 'spy']
-#TICKERS = 'spy'
+#TICKERS = ['aapl','msft','ibm','tsla', 'spy']
+TICKERS = 'spy'
 START_DATE = '2019-01-01'
 END_DATE = TODAY
 
@@ -36,7 +36,7 @@ class ExploreTicker:
         self.adj_close = data['Adj Close']
         self.volume = data['Volume']
 
-    def generate_plot(self, xlabel='Date', ylabel='Adj Close($)', show=False):
+    def generate_plot(self, x, y, title, xlabel=None, ylabel=None, show=False, save=True):
         '''
         Generates a plot to show the historical price of a stock
         Parameters:
@@ -46,18 +46,19 @@ class ExploreTicker:
             show: Bool; Default=False. If set to True, plot will appear in pop-up window
         '''
         fig, ax = plt.subplots(figsize=(10,5))
-        ax.plot(self.data.index, self.adj_close)
-        ax.set(title=self.name,
-                xlabel=xlabel,
-                ylabel=ylabel)
+        ax.plot(x, y)
+        ax.set(title=title.upper(),
+               xlabel=xlabel,
+               ylabel=ylabel)
         plt.grid(True)
 
         # Saves the plots
-        path = os.path.join(IMAGES_PATH, self.name)
-        os.makedirs(path, exist_ok=True)
-        print('\nSaving Figure as {} in {}'.format(self.name, path))
-        plt.savefig(os.path.join(path, self.name + '_price'))
-        print('\nFigure Saved Successfully')
+        if save == True:
+            path = os.path.join(IMAGES_PATH, self.name )
+            os.makedirs(path, exist_ok=True)
+            print('\nSaving Figure as {} in {}'.format(self.name, path))
+            plt.savefig(os.path.join(path, title))
+            print('\nFigure Saved Successfully')
 
         if show == True:
             plt.show()
@@ -125,19 +126,19 @@ def main():
 
 
 
-    cls_ls = []
-    for  i in dfs:
-        print(i)
-        cls_ls.append(ExploreTicker(i, dfs[i]))
+    # cls_ls = []
+    # for  i in dfs:
+    #     print(i)
+    #     cls_ls.append(ExploreTicker(i, dfs[i]))
+    #
+    # for i in cls_ls:
+    #     print(i.name)
 
-    for i in cls_ls:
-        print(i.name)
-
-
-    # spy = ExploreTicker('spy', data)
-    # spy.pcnt_change = spy.adj_close.pct_change() * 100
-    # print(spy.pcnt_change)
-    #spy_percent_change = spy.calculate_percent_change(spy.adj_close)
+    spy = ExploreTicker('spy', dfs)
+    spy.generate_plot(spy.data.index, spy.adj_close, 'spy_close', 'Date', 'Price', show=True, save=True)
+     #spy.pcnt_change = spy.adj_close.pct_change() * 100
+     #print(spy.pcnt_change)
+     #spy_percent_change = spy.calculate_percent_change(spy.adj_close)
 
 
 
