@@ -2,3 +2,5 @@ video_scripts
 *.ipynb_checkpoints
 class_dev.ipynb
 *pyc
+technical_indicators
+main.py

@@ -1,19 +1,26 @@
 """Main file for our entire program"""
 # Imports
-import EquityExplorer.calculate as calc
 import EquityExplorer.ExploreTicker as explore
+import matplotlib.pyplot as plt
+
+START_DATE = '2019-01-01'
+END_DATE = '2020-01-01'
 
 def main():
-    ls = ['ibm', 'aapl', 'tsla', 'msft', 'acb']
+    tesla = explore.ExploreTicker('tesla', explore.get_info('tsla', START_DATE, END_DATE))
+    tesla.data['MAVG'], tesla.data['hband'], tesla.data['lband'] = tesla.calculate_bollinger_bands(window=20, stdevs=2)
 
-    dfs = explore.get_info(ls, '2019-01-01','2020-01-01')
-    print(dfs.keys())
+    tesla.generate_plot(
+    x=tesla.date,
+    y=[tesla.data['MAVG'], tesla.data['hband'], tesla.data['lband'], tesla.close],
+    title='Tesla-BBands',
+    xlabel='Date',
+    ylabel='Price',
+    show=True,
+    )
 
-    IBM = explore.ExploreTicker('ibm', dfs['ibm'])
-    print(IBM.data)
-
-
-
+    tesla.data['pct_change'] = tesla.calculate_percent_change(tesla.adj_close)
+    print(tesla.data)
 
 
 if __name__ == '__main__':
