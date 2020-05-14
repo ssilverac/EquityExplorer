@@ -87,8 +87,8 @@ class ExploreTicker:
                 it will not save
         '''
         fig, ax = plt.subplots(figsize=(10,5))
-        for i in y:
-            ax.plot(x, i)
+        #for i in y:
+        ax.plot(x, y)
 
         ax.set(title=title.upper(),
                xlabel=xlabel,
