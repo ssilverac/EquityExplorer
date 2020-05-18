@@ -20,7 +20,6 @@ class LinearRegression:
         self.m = self.x.shape[0] #number of training samples
         ones = np.ones((self.m, 1))
         self.x = np.hstack((ones, self.x))
-        self.theta = np.zeros((self.x.shape[1], 1)) # create a 1D array of zeros of same length as X rows
         self.y = self.y[:, np.newaxis]
 
     def __gradient_descent(self):
@@ -28,12 +27,12 @@ class LinearRegression:
         theta = theta - (1/m) * [(XTranspose dot ((X dot theta) - y))]
         '''
         self.__add_intercept()
+        self.theta = np.ones((self.x.shape[1], 1)) # create a 1D array of zeros of same length as X rows
 
         for i in range (self.n_iters):
             temp = self.x.dot(self.theta) - self.y
             temp2 = self.x.T.dot(temp)
             self.theta = self.theta - ((self.alpha/self.m) * temp2)
-        print(self.theta)
 
     def fit(self, x, y, alpha=0.01, n_iters=500):
         self.x = x
@@ -43,7 +42,13 @@ class LinearRegression:
         self.__gradient_descent()
 
     def predict(self, x):
-        pass
+
+        m = x.shape[0]
+        ones = np.ones((m, 1))
+        x = np.hstack((ones, x))
+        y_predict = x.dot(self.theta)
+
+        return y_predict
 
 def test():
     pass
